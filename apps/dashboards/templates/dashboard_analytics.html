@@ -1,0 +1,801 @@
+{% extends layout_path %}
+
+{% load static %}
+{% load i18n %}
+
+{% block title %}Dashboard - Analytics{% endblock title %}
+
+{% block vendor_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'vendor/libs/apex-charts/apex-charts.css' %}" />
+{% endblock vendor_css %}
+
+{% block vendor_js %}
+{{ block.super }}
+<script src="{% static 'vendor/libs/apex-charts/apexcharts.js' %}"></script>
+{% endblock vendor_js %}
+
+{% block page_js %}
+{{ block.super }}
+<script src="{% static 'js/dashboards-analytics.js' %}"></script>
+{% endblock page_js %}
+
+{% block content %}
+<div class="row gy-6">
+  <!-- Congratulations card -->
+  <div class="col-md-12 col-lg-4">
+    <div class="card">
+      <div class="card-body text-nowrap">
+        <h5 class="card-title mb-0 flex-wrap text-nowrap">Welcome Jorj & Aeron!</h5>
+        <p class="mb-2">📍 Location Highlights</p>
+        <h4 class="text-primary mb-0">73% of target</h4>
+        <p class="mb-2">6 Total Sites | 5 Active | 89% Uptime </p>
+        <p class="mb-2">⚠️ 1 Maintenance Alert 🚀</p>
+        <a href="javascript:;" class="btn btn-sm btn-primary">View Map</a>
+      </div>
+      <img src="{% static 'img/illustrations/fire-icon.jpg' %}" class="position-absolute bottom-0 end-0 me-5 mb-5" width="140" alt="Fire Alerts">
+    </div>
+  </div>
+  
+
+  
+  <div class="col-lg-8">
+    <div class="card h-100">
+      <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="card-title m-0 me-2">Location Summary</h5>
+          <div class="dropdown">
+            <button class="btn text-muted p-0" type="button" id="transactionID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="ri-more-2-line ri-24px"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="transactionID">
+              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+              <a class="dropdown-item" href="javascript:void(0);">Update</a>
+            </div>
+          </div>
+        </div>
+        <p class="small mb-0"><span class="h6 mb-0">Location Focus</span> 😎 this month</p>
+      </div>
+      <div class="card-body pt-lg-10">
+        <div class="row g-6">
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-primary rounded shadow-xs">
+                  <i class="ri-map-pin-line ri-24px"></i>  <!-- Changed to map pin icon -->
+                </div>
+              </div>
+              <div class="ms-3">
+                <p class="mb-0">Locations</p>
+                <h5 class="mb-0">6</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-success rounded shadow-xs">
+                  <i class="ri-global-line ri-24px"></i> <!-- Changed to global icon -->
+                </div>
+              </div>
+              <div class="ms-3">
+                <p class="mb-0">Countries</p>
+                <h5 class="mb-0">6</h5>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+            <div class="avatar">
+              <div class="avatar-initial bg-warning rounded shadow-xs">
+                <i class="ri-broadcast-line ri-24px"></i> <!-- Changed to broadcast/active icon -->
+              </div>
+            </div>
+            <div class="ms-3">
+              <p class="mb-0">Active</p>
+              <h5 class="mb-0">5</h5>
+            </div>
+          </div>
+        </div>
+          <div class="col-md-3 col-6">
+            <div class="d-flex align-items-center">
+              <div class="avatar">
+                <div class="avatar-initial bg-info rounded shadow-xs">
+                  <i class="ri-time-line ri-24px"></i> <!-- Changed to time icon -->
+                </div>
+              </div>
+              <div class="ms-3">
+                <p class="mb-0">Last Updated</p>
+                <h5 class="mb-0">2h ago</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Transactions -->
+
+  <!-- Weekly Overview Chart -->
+  <div class="col-xl-4 col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+          <h5 class="mb-1">📈 Location Activity Overview</h5>
+          <div class="dropdown">
+            <button class="btn text-muted p-0" type="button" id="weeklyOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <i class="ri-more-2-line ri-24px"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="weeklyOverviewDropdown">
+              <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+              <a class="dropdown-item" href="javascript:void(0);">Share</a>
+              <a class="dropdown-item" href="javascript:void(0);">Update</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pt-lg-2">
+        <div id="weeklyOverviewChart"></div>
+        <div class="mt-1 mt-md-3">
+          <div class="d-flex align-items-center gap-4">
+            <h4 class="mb-0">45%</h4>
+            <p class="mb-0">📍45% increase in resolved requests this month</p>
+          </div>
+          <div class="d-grid mt-3 mt-md-4">
+            <button class="btn btn-primary" type="button">View Maintenance Logs</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Weekly Overview Chart -->
+
+  <!-- Total Earnings -->
+  <div class="col-xl-4 col-md-6">
+    <div class="card">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title m-0 me-2">Top Active Locations</h5>
+        <div class="dropdown">
+          <button class="btn text-muted p-0" type="button" id="totalEarnings" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-more-2-line ri-24px"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalEarnings">
+            <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+            <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+            <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body pt-lg-8">
+        <div class="mb-5 mb-lg-12">
+          <div class="d-flex align-items-center">
+            <h3 class="mb-0"></h3>
+            <span class="text-success ms-2">
+              
+            
+            </span>
+          </div>
+          
+        </div>
+        <ul class="p-0 m-0">
+          <li class="d-flex mb-6">
+            <div class="avatar flex-shrink-0 bg-dark rounded me-3">
+              <div class="avatar-initial">
+                <i class="ri-building-line ri-24px text-primary"></i> <!-- Changed to blue -->
+              </div>
+            </div>
+            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+                <h6 class="mb-0">Sta. Lourdes</h6>
+                <p class="mb-0">Puerto Princesa, Philippines</p>
+              </div>
+              <div>
+                <h6 class="mb-2">24.8K </h6>
+                <div class="progress bg-label-primary" style="height: 4px;">
+                  <div class="progress-bar bg-primary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="d-flex mb-6">
+            <div class="avatar flex-shrink-0 bg-primary rounded me-3">
+            <div class="avatar-initial">
+              <i class="ri-map-pin-user-line ri-24px text-dark"></i> <!-- Changed to black icon -->
+            </div>
+          </div>
+          <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+            <div class="me-2">
+              <h6 class="mb-0">East Jenniferport</h6>
+              <p class="mb-0">Lake Jack, Iran</p>
+            </div>
+              <div>
+                <h6 class="mb-2">8.6K</h6>
+                <div class="progress bg-label-info" style="height: 4px;">
+                  <div class="progress-bar bg-info" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="d-flex">
+            <div class="avatar flex-shrink-0 bg-light rounded me-3">
+              <div class="avatar-initial">
+                <i class="ri-map-pin-line ri-24px text-success"></i> <!-- Green location icon -->
+              </div>
+            </div>
+            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+              <div class="me-2">
+                <h6 class="mb-0">Jonestown</h6>
+                <p class="mb-0">East Norman, Djibouti</p>
+              </div>
+              <div>
+                <h6 class="mb-2">1.2K</h6>
+                <div class="progress bg-label-secondary" style="height: 4px;">
+                  <div class="progress-bar bg-secondary" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--/ Total Earnings -->
+
+  <!-- Four Cards -->
+  <div class="col-xl-4 col-md-6">
+    <div class="row gy-6">
+      <!-- Total Profit line chart -->
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <div class="card-header pb-0">
+            <h4 class="mb-0">12</h4>
+          </div>
+          <div class="card-body">
+            <div id="totalProfitLineChart" class="mb-3"></div>
+            <h6 class="text-center mb-0">Total Incidents</h6>
+          </div>
+        </div>
+      </div>
+      <!--/ Total Profit line chart -->
+      <!-- Total Profit Weekly Project -->
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="avatar">
+              <div class="avatar-initial bg-secondary rounded-circle shadow-xs">
+                <i class="ri-pie-chart-2-line ri-24px"></i>
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="btn text-muted p-0" type="button" id="totalProfitID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="ri-more-2-line ri-24px"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="totalProfitID">
+                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                <a class="dropdown-item" href="javascript:void(0);">Update</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h6 class="mb-1">Total Profit</h6>
+            <div class="d-flex flex-wrap mb-1 align-items-center">
+              <h4 class="mb-0 me-2">5</h4>
+              <p class="text-success mb-0">▲42%</p>
+            </div>
+            <small>Major Fires</small>
+          </div>
+        </div>
+      </div>
+      <!--/ Total Profit Weekly Project -->
+      <!-- New Yearly Project -->
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="avatar">
+              <div class="avatar-initial bg-primary rounded-circle shadow-xs">
+                <i class="ri-file-word-2-line ri-24px"></i>
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="btn text-muted p-0" type="button" id="newProjectID" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="ri-more-2-line ri-24px"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="newProjectID">
+                <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
+                <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                <a class="dropdown-item" href="javascript:void(0);">Update</a>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h6 class="mb-1">New Today</h6>
+            <div class="d-flex flex-wrap mb-1 align-items-center">
+              <h4 class="mb-0 me-2">3</h4>
+              <p class="text-danger mb-0">▼18%</p>
+            </div>
+            <small>Yearly Project</small>
+          </div>
+        </div>
+      </div>
+      <!--/ New Yearly Project -->
+      <!-- Sessions chart -->
+      <div class="col-sm-6">
+        <div class="card h-100">
+          <div class="card-header pb-0">
+            <h4 class="mb-0">28</h4>
+          </div>
+          <div class="card-body">
+            <div id="sessionsColumnChart" class="mb-3"></div>
+            <h6 class="text-center mb-0">Resolved</h6>
+          </div>
+        </div>
+      </div>
+      <!--/ Sessions chart -->
+    </div>
+  </div>
+  <!--/ Total Earning -->
+
+  <!-- Sales by Countries -->
+  <div class="col-xl-4 col-md-6">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center justify-content-between">
+        <h5 class="card-title m-0 me-2">Revenue by Country (FireApp Locations)</h5>
+        <div class="dropdown">
+          <button class="btn text-muted p-0" type="button" id="saleStatus" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="ri-more-2-line ri-24px"></i>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="saleStatus">
+            <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+            <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+            <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center mb-4">
+            <div class="avatar me-4">
+              <div class="avatar-initial bg-label-success rounded-circle">PH</div>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <h6 class="mb-0">P2,415k</h6>
+                <i class="ri-arrow-down-s-line ri-24px text-danger"></i>
+                <span class="text-danger">▼6.2%</span>
+              </div>
+              <p class="mb-0">Philippines(Sta. Lourdes)</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h6 class="mb-1">894k</h6>
+            <small class="text-muted">Revenue</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center mb-4">
+            <div class="avatar me-4">
+              <span class="avatar-initial bg-label-danger rounded-circle">IR</span>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <h6 class="mb-0">$865k</h6>
+                <i class="ri-arrow-up-s-line ri-24px text-success"></i>
+                <span class="text-success">▲ 72.4%</span>
+              </div>
+              <p class="mb-0">Iran(East Jenniferport)</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h6 class="mb-1">1.47M</h6>
+            <small class="text-muted">Revenue</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center mb-4">
+            <div class="avatar me-4">
+              <span class="avatar-initial bg-label-warning rounded-circle">DJ</span>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <h6 class="mb-0">$745k</h6>
+                <i class="ri-arrow-down-s-line ri-24px text-danger"></i>
+                <span class="text-danger">▼ 11.9%</span>
+              </div>
+              <p class="mb-0">Djibouti(Jonestown)</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h6 class="mb-1">148k</h6>
+            <small class="text-muted">Revenue</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center mb-4">
+            <div class="avatar me-4">
+              <span class="avatar-initial bg-label-secondary rounded-circle">AN</span>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <h6 class="mb-0">$45k</h6>
+                <i class="ri-arrow-up-s-line ri-24px text-success"></i>
+                <span class="text-success">▲16.2%</span>
+              </div>
+              <p class="mb-0">Andorra (North Kendraview)</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h6 class="mb-1">86k</h6>
+            <small class="text-muted">Revenue</small>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-items-center">
+            <div class="avatar me-4">
+              <span class="avatar-initial bg-label-danger rounded-circle">AO</span>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-1 mb-1">
+                <h6 class="mb-0">$82k</h6>
+                <i class="ri-arrow-up-s-line ri-24px text-success"></i>
+                <span class="text-success">▲13.2%</span>
+              </div>
+              <p class="mb-0">Angola (New Davidhaven)</p>
+            </div>
+          </div>
+          <div class="text-end">
+            <h6 class="mb-1">69k</h6>
+            <small class="text-muted">Revenue</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Sales by Countries -->
+
+  <!-- Deposit / Withdraw -->
+  <div class="col-xl-8">
+  <div class="card-group">
+    <!-- Fire Truck Utilization -->
+    <div class="card mb-0">
+      <div class="card-body card-separator">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+          <h5 class="m-0 me-2">Fire Truck Utilization</h5>
+          <a class="fw-medium" href="javascript:void(0);">View all</a>
+        </div>
+        <div class="deposit-content pt-2">
+          <ul class="p-0 m-0">
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-truck-line ri-24px text-danger"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Truck-022</h6>
+                  <p class="mb-0">where (Tucker, Crawford and Lopez)</p>
+                </div>
+                <h6 class="text-success mb-0">MAX.80</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-truck-line ri-24px text-primary"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Truck-130</h6>
+                  <p class="mb-0">south (Drake Inc)</p>
+                </div>
+                <h6 class="text-success mb-0">MAX.80</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-truck-line ri-24px text-warning"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Truck-525</h6>
+                  <p class="mb-0">rock (Tucker, Crawford and Lopez)</p>
+                </div>
+                <h6 class="text-success mb-0">MAX.50</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-truck-line ri-24px text-info"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Truck-114</h6>
+                  <p class="mb-0">skin (Holden Group)</p>
+                </div>
+                <h6 class="text-success mb-0">MAX.150</h6>
+              </div>
+            </li>
+            <li class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-truck-line ri-24px text-success"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Truck-894</h6>
+                  <p class="mb-0">to (Leon-Smith)</p>
+                </div>
+                <h6 class="text-success mb-0">MAX.100</h6>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firestation Operational Costs -->
+    <div class="card mb-0">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+          <h5 class="m-0 me-2">Firestation Operational Costs</h5>
+          <a class="fw-medium" href="javascript:void(0);">View all</a>
+        </div>
+        <div class="withdraw-content pt-2">
+          <ul class="p-0 m-0">
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-building-2-line ri-24px text-danger"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Sta. Lourdes</h6>
+                  <p class="mb-0">Puerto Princesa City, Philippines</p>
+                </div>
+                <h6 class="text-danger mb-0">-P12,985</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-building-2-line ri-24px text-primary"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Holden Group</h6>
+                  <p class="mb-0">Anthonyside, Tanzania</p>
+                </div>
+                <h6 class="text-danger mb-0">-$9,345</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-building-2-line ri-24px text-warning"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Tucker, Crawford and Lopez</h6>
+                  <p class="mb-0">Watkinstown, Guam</p>
+                </div>
+                <h6 class="text-danger mb-0">$830</h6>
+              </div>
+            </li>
+            <li class="d-flex mb-4 align-items-center pb-2">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-building-2-line ri-24px text-info"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Leon-Smith</h6>
+                  <p class="mb-0">New Anthonyfurt, Iceland</p>
+                </div>
+                <h6 class="text-danger mb-0">-$981</h6>
+              </div>
+            </li>
+            <li class="d-flex align-items-center">
+              <div class="flex-shrink-0 me-4">
+                <i class="ri-building-2-line ri-24px text-success"></i>
+              </div>
+              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
+                <div class="me-2">
+                  <h6 class="mb-0">Drake Inc</h6>
+                  <p class="mb-0">Louisfort, Ecuador</p>
+                </div>
+                <h6 class="text-danger mb-0">-$45</h6>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+  <!-- Deposit / Withdraw -->
+
+  <!-- Data Tables -->
+  <div class="col-12">
+    <div class="card">
+      <div class="table-responsive">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th class="text-truncate">User</th>
+              <th class="text-truncate">Email</th>
+              <th class="text-truncate">Role</th>
+              <th class="text-truncate">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="avatar avatar-sm me-4">
+                    <img src="{% static 'img/avatars/1.png' %}" alt="Avatar" class="rounded-circle">
+                  </div>
+                  <div>
+                    <h6 class="mb-0 text-truncate">Tony Gould</h6>
+            <small class="text-truncate">@captain_tony</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">tony.gould@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-vip-crown-line ri-22px text-primary me-2"></i>
+          <span>Battalion Chief</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-success rounded-pill">Active</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/3.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Timothy Moore</h6>
+            <small class="text-truncate">@probationary_tim</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">tim.moore@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-user-3-line ri-22px text-success me-2"></i>
+          <span>Probationary</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-warning rounded-pill">Training</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/2.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Michael Rodriguez</h6>
+            <small class="text-truncate">@mike_rod</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">m.rodriguez@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-shield-star-line ri-22px text-danger me-2"></i>
+          <span>Firefighter III</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-success rounded-pill">Active</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/5.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Karen Lee</h6>
+            <small class="text-truncate">@chief_karen</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">k.lee@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-vip-crown-line ri-22px text-primary me-2"></i>
+          <span>Battalion Chief</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-success rounded-pill">Active</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/4.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Joseph Pitts</h6>
+            <small class="text-truncate">@captain_joe</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">j.pitts@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-medal-line ri-22px text-info me-2"></i>
+          <span>Captain</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-success rounded-pill">Active</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/7.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Victoria Powers</h6>
+            <small class="text-truncate">@vic_powers</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">v.powers@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-vip-crown-line ri-22px text-primary me-2"></i>
+          <span>Battalion Chief</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-warning rounded-pill">On Leave</span></td>
+    </tr>
+    <tr>
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/6.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Jerry Mcguire</h6>
+            <small class="text-truncate">@jerry_mac</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">j.mcguire@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-vip-crown-line ri-22px text-primary me-2"></i>
+          <span>Battalion Chief</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-success rounded-pill">Active</span></td>
+    </tr>
+    <tr class="border-transparent">
+      <td>
+        <div class="d-flex align-items-center">
+          <div class="avatar avatar-sm me-4">
+            <img src="{% static 'img/avatars/1.png' %}" alt="Avatar" class="rounded-circle">
+          </div>
+          <div>
+            <h6 class="mb-0 text-truncate">Amber Harris</h6>
+            <small class="text-truncate">@amber_driver</small>
+          </div>
+        </div>
+      </td>
+      <td class="text-truncate">a.harris@fireapp.com</td>
+      <td class="text-truncate">
+        <div class="d-flex align-items-center">
+          <i class="ri-steering-line ri-22px text-secondary me-2"></i>
+          <span>Driver</span>
+        </div>
+      </td>
+      <td><span class="badge bg-label-secondary rounded-pill">Inactive</span></td>
+    </tr>
+  </tbody>
+</table>
+      </div>
+    </div>
+  </div>
+  <!--/ Data Tables -->
+</div>
+{% endblock %}
